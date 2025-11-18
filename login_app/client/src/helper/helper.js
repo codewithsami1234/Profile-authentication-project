@@ -1,16 +1,20 @@
 import axios from 'axios';
 
-// ✅ Default base URL fallback for dev
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN || "http://localhost:8080";
+// ✅ Set live backend URL for GitHub Pages deployment
+export const API_URL = process.env.REACT_APP_SERVER_DOMAIN || "https://your-backend.onrender.com";
+
+// Use API_URL for all requests
+const api = axios.create({
+  baseURL: API_URL,
+});
 
 /** Authenticate username */
 export async function authenticate(username) {
   if (!username) return { error: "Username is required!" };
-
   try {
-    const response = await axios.post('/api/authenticate', { username });
+    const response = await api.post('/api/authenticate', { username });
     return { success: true, status: response.status, data: response.data };
-  } catch (error) {
+  } catch {
     return { error: "User does not exist or server error!" };
   }
 }
@@ -18,14 +22,11 @@ export async function authenticate(username) {
 /** Get user details */
 export async function getUsername(username) {
   try {
-    if (!username) {
-      username = localStorage.getItem('username');
-    }
+    if (!username) username = localStorage.getItem('username');
     if (!username) return { error: "Username not found!" };
-
-    const { data } = await axios.get(`/api/user/${username}`);
+    const { data } = await api.get(`/api/user/${username}`);
     return data;
-  } catch (error) {
+  } catch {
     return { error: "Couldn't fetch user details!" };
   }
 }
@@ -33,33 +34,27 @@ export async function getUsername(username) {
 /** Register user */
 export async function registerUser(credentials) {
   try {
-    const { data, status } = await axios.post('/api/register', credentials);
+    const { data, status } = await api.post('/api/register', credentials);
     const msg = data?.msg || "Registration successful!";
 
     if (status === 201) {
       const { username, email } = credentials;
-      await axios.post('/api/registerMail', {
-        username,
-        userEmail: email,
-        text: msg,
-      });
+      await api.post('/api/registerMail', { username, userEmail: email, text: msg });
     }
 
     return { success: true, msg: "User registered successfully!" };
-  } catch (error) {
+  } catch {
     return { error: "User registration failed!" };
   }
 }
 
-/** ✅ Fixed: Verify password */
+/** Verify password */
 export async function verifyPassword({ username, password }) {
   if (!username || !password) throw new Error("Username and password are required!");
-
   try {
-    const { data, status } = await axios.post(`/api/login`, { username, password });
+    const { data, status } = await api.post('/api/login', { username, password });
     return { success: true, data, status };
   } catch (error) {
-    // Throw the error so toast.promise in Password.jsx detects it
     throw new Error(error.response?.data?.msg || "Password Not Match!");
   }
 }
@@ -69,8 +64,7 @@ export async function updateUser(response) {
   try {
     const token = localStorage.getItem('token');
     if (!token) return { error: "No authorization token found!" };
-
-    const { data } = await axios.put('/api/updateuser', response, {
+    const { data } = await api.put('/api/updateuser', response, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return { success: true, data };
@@ -86,20 +80,17 @@ export async function generateOTP(username) {
     const userEmail = user?.email;
     if (!userEmail) return { error: "User email not found!" };
 
-    const { data, status } = await axios.get(`/api/generateOTP?username=${username}`);
-
+    const { data, status } = await api.get(`/api/generateOTP?username=${username}`);
     if (status === 201 && data?.code) {
-      await axios.post('/api/registerMail', {
+      await api.post('/api/registerMail', {
         username,
         userEmail,
         text: `Your password recovery OTP is ${data.code}.`,
         subject: 'Password Recovery OTP',
       });
     }
-
     return { success: true, data };
-  } catch (error) {
-    console.error('❌ OTP generation failed:', error);
+  } catch {
     return { error: "Failed to generate OTP!" };
   }
 }
@@ -107,9 +98,8 @@ export async function generateOTP(username) {
 /** Verify OTP */
 export async function verifyOTP({ username, code }) {
   if (!code) return { error: "OTP code is required!" };
-
   try {
-    const { data, status } = await axios.get(`/api/verifyOTP?username=${username}&code=${code}`);
+    const { data, status } = await api.get(`/api/verifyOTP?username=${username}&code=${code}`);
     return { success: true, data, status };
   } catch {
     return { error: "Failed to verify OTP!" };
@@ -119,7 +109,7 @@ export async function verifyOTP({ username, code }) {
 /** Reset password */
 export async function resetPassword({ username, password }) {
   try {
-    const { data, status } = await axios.put(`/api/resetPassword`, { username, password });
+    const { data, status } = await api.put(`/api/resetPassword`, { username, password });
     return { success: true, data, status };
   } catch {
     return { error: "Failed to reset password!" };
@@ -129,7 +119,7 @@ export async function resetPassword({ username, password }) {
 /** Create reset session */
 export async function createResetSession() {
   try {
-    const { data, status } = await axios.get(`/api/createResetSession`);
+    const { data, status } = await api.get(`/api/createResetSession`);
     return { success: true, data, status };
   } catch {
     return { error: "Failed to create reset session!" };
