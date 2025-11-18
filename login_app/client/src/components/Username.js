@@ -10,7 +10,7 @@ import styles from '../styles/Username.module.css';
 
 export default function Username() {
   const navigate = useNavigate();
-  const usernameStore = useAuthStore((state) => state.auth.username);
+  const usernameStore = useAuthStore((state) => state.auth.username) || localStorage.getItem('username');
   const setUsername = useAuthStore((state) => state.setUsername);
 
   useEffect(() => {
@@ -31,6 +31,7 @@ export default function Username() {
 
           if (response?.success) {
             setUsername(values.username);
+            localStorage.setItem('username', values.username); // Save username to localStorage
             navigate('/password');
           } else {
             toast.error(response?.error || 'User does not exist');
@@ -73,9 +74,8 @@ export default function Username() {
                   id="username"
                   type="text"
                   placeholder=" "
-                  value={formik.values.username}
-                  onChange={formik.handleChange}
                   className={`${styles.textbox} peer`}
+                  maxLength={20} // Optional maxLength
                 />
                 <label
                   htmlFor="username"
