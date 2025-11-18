@@ -9,11 +9,17 @@ import { updateUser } from '../helper/helper';
 import { useAuthStore } from '../store/store';
 import styles from '../styles/Username.module.css';
 import extend from '../styles/Profile.module.css';
+import { API_URL } from '../config'; // <-- added
 
 export default function Profile() {
   const [file, setFile] = useState();
   const { username } = useAuthStore((state) => state.auth);
-  const [{ isLoading, apiData, serverError }] = useFetch(`/api/user/${username}`);
+
+  // <-- updated fetch URL to use API_URL
+  const [{ isLoading, apiData, serverError }] = useFetch(
+    username ? `${API_URL}/user/${username}` : null
+  );
+
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -30,7 +36,7 @@ export default function Profile() {
     onSubmit: async (values) => {
       try {
         const updatedValues = { ...values, profile: file || apiData?.profile || '' };
-        await updateUser(updatedValues);
+        await updateUser(updatedValues); // ensure updateUser uses API_URL inside helper.js
         toast.success('Updated Successfully!');
         console.log('Profile updated data:', updatedValues);
       } catch (error) {
@@ -53,7 +59,6 @@ export default function Profile() {
   if (isLoading) return <h1 className="text-2xl font-bold">Loading...</h1>;
   if (serverError) return <h1 className="text-xl text-red-500">{serverError.message}</h1>;
 
-  // ✅ Fixed profile image logic
   const profileSrc = file || apiData?.profile || avatar;
 
   return (
@@ -86,7 +91,6 @@ export default function Profile() {
               />
             </div>
 
-            {/* Input Fields */}
             <div className="flex flex-col gap-6 px-8">
               <div className="flex gap-6">
                 <div className="relative w-full">
