@@ -5,6 +5,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { generateOTP, verifyOTP } from '../helper/helper';
 import { useAuthStore } from '../store/store';
 import styles from '../styles/Username.module.css';
+import { API_URL } from '../config'; // <-- added
 
 export default function Recovery() {
   const { username: storeUsername } = useAuthStore((state) => state.auth);
@@ -21,6 +22,7 @@ export default function Recovery() {
 
     const sendOTP = async () => {
       try {
+        // <-- use API_URL inside helper.js (no change here in component)
         const otp = await generateOTP(username);
         if (otp?.success) toast.success('OTP has been sent to your email!');
         else toast.error('Problem while generating OTP!');
@@ -42,7 +44,7 @@ export default function Recovery() {
     }
 
     try {
-      const { status } = await verifyOTP({ username, code: OTP.trim() });
+      const { status } = await verifyOTP({ username, code: OTP.trim() }); // API_URL used in helper
       if (status === 201) {
         toast.success('Verified successfully!');
         navigate('/reset');
@@ -57,7 +59,7 @@ export default function Recovery() {
   /** Resend OTP handler */
   const resendOTP = async () => {
     try {
-      const sendPromise = generateOTP(username);
+      const sendPromise = generateOTP(username); // API_URL used in helper
       toast.promise(sendPromise, {
         loading: 'Sending...',
         success: <b>OTP has been sent to your email!</b>,
@@ -89,7 +91,6 @@ export default function Recovery() {
             </div>
 
             <div className="flex flex-col items-center gap-6">
-              {/* Floating Label OTP Input (same style as Reset.js) */}
               <div className="relative w-3/4">
                 <input
                   value={OTP}
