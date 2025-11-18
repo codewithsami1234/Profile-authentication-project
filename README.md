@@ -65,7 +65,7 @@ Check out the live project here:
 ## Video Demo
 
 Watch the project in action:  
-[🎥 Video Demo](https://your-video-demo-link.com)
+https://github.com/user-attachments/assets/e122ea07-faca-4760-a702-f023b55f2f6b
 
 ---
 
