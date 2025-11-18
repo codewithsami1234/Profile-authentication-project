@@ -8,13 +8,15 @@ import useFetch from '../hooks/fetch.hook';
 import { useAuthStore } from '../store/store';
 import styles from '../styles/Username.module.css';
 import { verifyPassword } from '../helper/helper';
+import { API_URL } from '../config'; // <-- added
 
 export default function Password() {
   const navigate = useNavigate();
   const { username } = useAuthStore((state) => state.auth);
 
+  // <-- updated fetch URL to use API_URL
   const [{ isLoading, apiData, status, serverError }] = useFetch(
-    username ? `/api/user/${username}` : null
+    username ? `${API_URL}/user/${username}` : null
   );
 
   useEffect(() => {
@@ -82,7 +84,6 @@ export default function Password() {
               />
             </div>
 
-            {/* Floating Label Input */}
             <div className="relative flex flex-col items-center gap-8 w-80 mx-auto">
               <div className="relative w-full">
                 <input
