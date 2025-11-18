@@ -1,0 +1,176 @@
+/* ======================
+   Glass container
+   ====================== */
+.glass {
+  width: 90%;
+  max-width: 420px;
+  margin: auto;
+  padding: 2rem 1.5rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 182, 193, 0.35); /* 🌸 light pink glass */
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease-in-out, background 0.3s ease-in-out;
+}
+
+.glass:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 182, 193, 0.45); /* slightly more visible pink on hover */
+}
+
+/* ======================
+   Headings
+   ====================== */
+.title h4 {
+  color: #7c3aed; /* violet-600 */
+  font-weight: 800; /* 🩵 now extra bold */
+  font-size: 2.4rem;
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+h4 {
+  color: #bd7be9;
+  font-weight: 600; /* increased */
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* ======================
+   Profile image
+   ====================== */
+.profile_img {
+  width: 8rem;
+  height: 8rem;
+  cursor: pointer;
+  object-fit: cover;
+  border-radius: 9999px;
+  border: 3px solid #38bdf8; /* sky-400 */
+  transition: all 0.25s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.profile_img:hover {
+  transform: scale(1.05);
+  border-color: #0284c7; /* sky-600 */
+}
+
+/* ======================
+   Textbox (input fields)
+   ====================== */
+.textbox {
+  display: flex;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  margin-top: 0.75rem;
+  border: 1px solid #38bdf8; /* sky border */
+  border-radius: 0.75rem;
+  background: #f0f9ff; /* sky-50 background */
+  outline: none;
+  font-size: 1rem;
+  color: #111827;
+  transition: border 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.textbox::placeholder {
+  color: transparent; /* hide placeholder since we have a floating label */
+}
+
+.textbox:focus {
+  border-color: #0284c7; /* darker sky */
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25);
+  background: #e0f2fe;
+}
+
+/* ======================
+   Floating label
+   ====================== */
+.input-group {
+  position: relative;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.input-group label {
+  position: absolute;
+  top: -0.75rem; /* 🟢 above the textbox */
+  left: 1rem;
+  background: rgba(255, 182, 193, 0.9); /* same glass pink tone */
+  padding: 0 0.25rem;
+  font-size: 0.9rem;
+  color: #0284c7; /* 🩵 light blue label color */
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+/* When input focused */
+.textbox:focus + label {
+  color: #0284c7; /* highlight label */
+  font-weight: 600;
+}
+
+/* ======================
+   Button
+   ====================== */
+.btn {
+  border: 1px solid transparent;
+  background: #6366f1; /* indigo-500 */
+  width: 100%;
+  padding: 0.9rem 1rem;
+  margin-top: 1.5rem;
+  border-radius: 0.75rem;
+  color: #f9fafb;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s, transform 0.1s;
+}
+
+/* 🌈 Two-color gradient on hover */
+.btn:hover {
+  background: linear-gradient(135deg, #ff6b6b, #4f46e5);
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+/* Hide file input */
+input[type='file'] {
+  display: none;
+}
+
+/* ======================
+   Responsive tweaks
+   ====================== */
+@media (max-width: 640px) {
+  .glass {
+    padding: 1.5rem 1rem;
+  }
+
+  .profile_img {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .textbox {
+    font-size: 0.95rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .btn {
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+
+  .title h4 {
+    font-size: 1.75rem;
+  }
+}

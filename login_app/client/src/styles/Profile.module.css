@@ -1,0 +1,104 @@
+/* Glass card container */
+.glass {
+  width: 90%;
+  max-width: 420px;
+  margin: auto;
+  padding: 2rem 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  background-color: rgba(255, 239, 249, 0.9); /* soft pink */
+  backdrop-filter: blur(12px); /* glass effect */
+  transition: transform 0.2s ease-in-out;
+}
+
+.glass:hover {
+  transform: translateY(-4px);
+}
+
+/* Profile image */
+.profile_img {
+  width: 8rem;
+  height: 8rem;
+  cursor: pointer;
+  object-fit: cover;
+  border-radius: 9999px;
+  border: 3px solid #38bdf8; /* sky-400 */
+  transition: all 0.2s ease-in-out;
+}
+
+.profile_img:hover {
+  transform: scale(1.05);
+  border-color: #0284c7; /* sky-600 */
+}
+
+/* Textbox (input fields) */
+.textbox {
+  display: flex;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-top: 0.5rem;
+  border: 1px solid #38bdf8;
+  border-radius: 0.75rem;
+  background: #e0f2fe; /* sky-100 */
+  outline: none;
+  font-size: 1rem;
+  color: #111827;
+  transition: border 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.textbox::placeholder {
+  color: #38bdf8;
+  opacity: 1;
+}
+
+.textbox:focus {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2);
+  background: #f0f9ff;
+}
+
+/* Button */
+.btn {
+  border: none;
+  background-color: #38bdf8; /* sky-400 */
+  width: 100%;
+  padding: 0.85rem 1rem;
+  margin-top: 1rem;
+  border-radius: 0.75rem;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.btn:hover {
+  background-color: #0284c7; /* sky-600 */
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+/* Responsive tweaks */
+@media (max-width: 640px) {
+  .glass {
+    padding: 1.5rem 1rem;
+  }
+
+  .profile_img {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .textbox {
+    font-size: 0.95rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .btn {
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+}
