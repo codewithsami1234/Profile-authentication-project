@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import avatar from '../assets/profile.png';
 import toast, { Toaster } from 'react-hot-toast';
@@ -10,11 +10,18 @@ import useFetch from '../hooks/fetch.hook';
 import styles from '../styles/Username.module.css';
 
 export default function Reset() {
-  const { username } = useAuthStore((state) => state.auth);
   const navigate = useNavigate();
+  const username = useAuthStore((state) => state.auth.username) || localStorage.getItem('username');
 
-  // ✅ Fixed path: make sure hook hits `/api/createResetSession`
-  const [{ isLoading, serverError }] = useFetch('/createResetSession');
+  useEffect(() => {
+    if (!username) {
+      toast.error('Username not found!');
+      navigate('/');
+    }
+  }, [username, navigate]);
+
+  // ✅ Updated endpoint for deployment
+  const [{ isLoading, serverError }] = useFetch('/api/createResetSession');
 
   const formik = useFormik({
     initialValues: {
@@ -69,6 +76,7 @@ export default function Reset() {
                   type="password"
                   className={`${styles.textbox} peer`}
                   placeholder=" "
+                  maxLength={20}
                 />
                 <label
                   htmlFor="password"
@@ -89,6 +97,7 @@ export default function Reset() {
                   type="password"
                   className={`${styles.textbox} peer`}
                   placeholder=" "
+                  maxLength={20}
                 />
                 <label
                   htmlFor="confirm_pwd"
