@@ -24,6 +24,7 @@ export default function Register() {
     onSubmit: async (values) => {
       values = { ...values, profile: file || '' };
       try {
+        // Update: call your Vercel serverless function
         const registerPromise = registerUser(values);
 
         toast.promise(registerPromise, {
