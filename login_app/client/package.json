@@ -14,7 +14,6 @@
     "web-vitals": "^2.1.4",
     "zustand": "^5.0.8"
   },
-  "proxy": "http://localhost:8080",
   "devDependencies": {
     "autoprefixer": "^10.4.21",
     "gh-pages": "^6.3.0",
